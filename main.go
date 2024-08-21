@@ -3,11 +3,14 @@ package main
 import (
 	"net/http"
 
+	"example.com/event-mgmt/db"
 	"example.com/event-mgmt/models"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	db.InitDB()
+
 	server := gin.Default()
 
 	server.GET("/events", getEvent)
@@ -17,7 +20,11 @@ func main() {
 }
 
 func getEvent(context *gin.Context) {
-	events := models.GetAllEvent()
+	events, err := models.GetAllEvent()
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "could not fetch events. Try again"})
+		return
+	}
 	context.JSON(http.StatusOK, events)
 }
 
@@ -33,7 +40,11 @@ func createEvent(context *gin.Context) {
 	event.ID = 1
 	event.UserID = 1
 
-	event.Save()
+	err = event.Save()
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create events"})
+		return
+	}
 	context.JSON(http.StatusCreated, gin.H{"message": "Event created", "event": event})
 
 }
