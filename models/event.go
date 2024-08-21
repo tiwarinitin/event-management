@@ -14,7 +14,7 @@ type Event struct {
 	UserID      int
 }
 
-var events = []Event{}
+//var events = []Event{}
 
 func (e Event) Save() error {
 	query := `
@@ -27,7 +27,12 @@ func (e Event) Save() error {
 		return err
 	}
 	defer stmt.Close()
-	result, err := stmt.Exec(e.Name, e.Description, e.DateTime, e.UserID)
+	result, err := stmt.Exec(
+		e.Name,
+		e.Description,
+		e.DateTime,
+		e.UserID,
+	)
 
 	if err != nil {
 		return err
@@ -35,9 +40,34 @@ func (e Event) Save() error {
 
 	id, err := result.LastInsertId()
 	e.ID = id
+
 	return err
 }
 
-func GetAllEvent() []Event {
-	return events
+func GetAllEvent() ([]Event, error) {
+	query := `
+	SELECT * FROM events
+	`
+	rows, err := db.DB.Query(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var events []Event
+
+	for rows.Next() {
+		var event Event
+		err := rows.Scan(&event.ID, &event.Name, &event.Description, &event.DateTime, &event.UserID)
+
+		if err != nil {
+			return nil, err
+		}
+
+		events = append(events, event)
+	}
+
+	return events, nil
 }

@@ -15,8 +15,8 @@ func InitDB() {
 		panic("Database connection does not establied!")
 	}
 
-	DB.SetMaxOpenConns(10)
-	DB.SetMaxIdleConns(5)
+	DB.SetMaxOpenConns(5)
+	DB.SetMaxIdleConns(2)
 
 	createTable()
 }
