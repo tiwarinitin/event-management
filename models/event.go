@@ -38,13 +38,28 @@ func (e Event) Save() error {
 		return err
 	}
 
-	id, err := result.LastInsertId()
-	e.ID = id
+	_, err = result.LastInsertId()
+	//e.ID = id
 
 	return err
 }
 
-func GetAllEvent() ([]Event, error) {
+func GetEventByID(id int64) (*Event, error) {
+	query := `
+	SELECT * FROM events WHERE id = ?
+	`
+	row := db.DB.QueryRow(query, id)
+
+	var event Event
+	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.DateTime, &event.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &event, nil
+}
+
+func GetAllEvents() ([]Event, error) {
 	query := `
 	SELECT * FROM events
 	`
