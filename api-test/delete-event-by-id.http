@@ -1,0 +1,2 @@
+DELETE http://localhost:8080/events/?
+// replace ? with some ID. ex: 1,5,15
