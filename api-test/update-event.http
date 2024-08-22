@@ -1,0 +1,10 @@
+PUT http://localhost:8080/events/?
+//replace ? with event id you want to update
+content-type: application/json
+
+{
+    "name": "Updating",
+    "description": "testing update api",
+    "dateTime": "2025-01-01T15:30:00.000Z",
+    "userID": 1
+}
