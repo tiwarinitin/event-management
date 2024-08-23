@@ -33,8 +33,8 @@ func (u Users) Save() error {
 		return err
 	}
 
-	userId, err := result.LastInsertId()
-	u.ID = userId
+	_, err = result.LastInsertId()
+	//u.ID = userId
 
 	return err
 }
