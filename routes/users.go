@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"example.com/event-mgmt/models"
@@ -23,4 +24,25 @@ func signup(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusCreated, gin.H{"message": "User created"})
+}
+
+func login(context *gin.Context) {
+	var user models.Users
+
+	err := context.ShouldBindJSON(&user)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse data!"})
+		return
+	}
+
+	err = user.ValidateUser()
+
+	if err != nil {
+		fmt.Println(err)
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Could not authenticate user"})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "Login successful!"})
 }
