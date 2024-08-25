@@ -13,15 +13,15 @@ You can reference *api-test* folder that contains all the api urls and body requ
 Some routes are mentioned below:
 
 ```
-GET /events
-GET /events/id
-POST /events
-PUT /events/id
+GET    /events
+GET    /events/id
+POST   /events
+PUT    /events/id
 DELETE /events
 DELETE /events/id
-POST /events/signup
-POST /events/login
-POST /events/id/register
+POST   /events/signup
+POST   /events/login
+POST   /events/id/register
 DELETE /events/id/register
 ```
 
