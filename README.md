@@ -1,7 +1,7 @@
 # Event-Management application
 This is REST API written in GO for event management. Containing several routes including registering,signup,login, etc actions.
 
-We have used Sqlite db for local db usage.
+We have used Sqlite db for local db usage. Dockerize this application will be updated in sometime.
 
 ## How to run application
 > go run .
